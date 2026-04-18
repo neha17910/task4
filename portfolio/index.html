@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Portfolio | PRODIGY INFOTECH</title>
+  <style>
+    :root{
+      --bg:#070b16;
+      --bg2:#0d1324;
+      --card:#11192f;
+      --card2:#151f3b;
+      --text:#f5f7ff;
+      --muted:#a9b2d6;
+      --accent:#7c5cff;
+      --accent2:#22c55e;
+      --line:rgba(255,255,255,.08);
+      --shadow:0 22px 60px rgba(0,0,0,.4);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124,92,255,.22), transparent 25%),
+        radial-gradient(circle at top right, rgba(34,197,94,.16), transparent 22%),
+        linear-gradient(160deg,var(--bg),var(--bg2));
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+
+    .container{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .navbar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:1000;
+      transition:.25s ease;
+      background:rgba(7,11,22,.28);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid transparent;
+    }
+
+    .navbar.scrolled{
+      background:rgba(9,12,22,.92);
+      border-bottom:1px solid var(--line);
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .nav-inner{
+      height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:.02em;
+    }
+
+    .brand-logo{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent),#9b8cff);
+      box-shadow:0 10px 25px rgba(124,92,255,.25);
+      font-weight:900;
+    }
+
+    .brand-text span{display:block;font-size:1rem}
+    .brand-text small{display:block;color:var(--muted);font-size:.75rem;margin-top:2px}
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      list-style:none;
+      padding:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+    }
+
+    .nav-links a{
+      padding:12px 18px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:700;
+      transition:.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{
+      background:linear-gradient(135deg,var(--accent),#9b8cff);
+      color:#fff;
+    }
+
+    .menu-btn{
+      display:none;
+      width:46px;height:46px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      border-radius:14px;
+      cursor:pointer;
+    }
+
+    .hero{
+      min-height:100vh;
+      display:grid;
+      align-items:center;
+      padding:110px 0 60px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    .headline{
+      font-size:clamp(2.6rem,5vw,5.5rem);
+      line-height:1.02;
+      letter-spacing:-.05em;
+      margin-bottom:18px;
+    }
+
+    .headline span{color:#cabfff}
+    .hero p{
+      color:var(--muted);
+      line-height:1.8;
+      max-width:62ch;
+      font-size:1.03rem;
+      margin-bottom:26px;
+    }
+
+    .cta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:28px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 20px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      font-weight:800;
+      transition:.2s ease;
+    }
+
+    .btn:hover{transform:translateY(-2px)}
+    .btn.primary{
+      background:linear-gradient(135deg,var(--accent),#9b8cff);
+      color:#fff;
+      box-shadow:0 14px 30px rgba(124,92,255,.28);
+    }
+
+    .btn.secondary{
+      background:rgba(255,255,255,.05);
+      color:#fff;
+    }
+
+    .quick-stats{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .stat{
+      min-width:160px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px 18px;
+      box-shadow:var(--shadow);
+    }
+
+    .stat strong{display:block;font-size:1.45rem;margin-bottom:4px}
+    .stat span{color:var(--muted);font-size:.9rem}
+
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(16px);
+    }
+
+    .photo-wrap{
+      aspect-ratio:1/1.08;
+      border-radius:22px;
+      overflow:hidden;
+      background:linear-gradient(135deg, rgba(124,92,255,.2), rgba(34,197,94,.12));
+      border:1px solid var(--line);
+      display:grid;
+      place-items:center;
+      position:relative;
+    }
+
+    .photo-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .photo-fallback{
+      width:100%;
+      height:100%;
+      display:grid;
+      place-items:center;
+      font-size:4rem;
+      color:#fff;
+      background:linear-gradient(135deg,#1b2150,#0f1633);
+    }
+
+    section{
+      padding:90px 0;
+    }
+
+    .section-title{
+      font-size:clamp(1.8rem,3vw,3rem);
+      letter-spacing:-.03em;
+      margin-bottom:12px;
+    }
+
+    .section-sub{
+      color:var(--muted);
+      line-height:1.7;
+      max-width:72ch;
+      margin-bottom:30px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      transition:.2s ease;
+    }
+
+    .card:hover{transform:translateY(-4px)}
+    .card h3{margin:12px 0 10px}
+    .card p,.card li{color:var(--muted);line-height:1.75}
+
+    .badge-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .badge{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(124,92,255,.14);
+      border:1px solid rgba(124,92,255,.25);
+      color:#efeaff;
+      font-weight:700;
+      font-size:.92rem;
+    }
+
+    .timeline{
+      display:grid;
+      gap:16px;
+    }
+
+    .timeline-item{
+      padding-left:18px;
+      border-left:2px solid rgba(124,92,255,.35);
+    }
+
+    .timeline-item h4{margin-bottom:6px}
+    .timeline-item small{color:#c9cfff}
+
+    .projects{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .project{
+      overflow:hidden;
+    }
+
+    .project .thumb{
+      height:190px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(124,92,255,.22), rgba(34,197,94,.16));
+      border:1px solid var(--line);
+      margin-bottom:16px;
+      display:grid;
+      place-items:center;
+      font-size:3rem;
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    form{
+      display:grid;
+      gap:14px;
+    }
+
+    input,textarea{
+      width:100%;
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(7,10,20,.7);
+      color:#fff;
+      outline:none;
+    }
+
+    input:focus,textarea:focus{
+      border-color:rgba(124,92,255,.7);
+      box-shadow:0 0 0 4px rgba(124,92,255,.12);
+    }
+
+    textarea{min-height:150px;resize:vertical}
+
+    footer{
+      padding:28px 0 40px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      text-align:center;
+    }
+
+    @media (max-width: 960px){
+      .hero-grid,.grid-3,.projects,.contact-grid{grid-template-columns:1fr}
+      .nav-links{
+        position:fixed;
+        top:90px;
+        left:16px; right:16px;
+        flex-direction:column;
+        align-items:stretch;
+        padding:12px;
+        border-radius:22px;
+        background:rgba(9,12,22,.96);
+        transform:translateY(-20px);
+        opacity:0;
+        pointer-events:none;
+        transition:.25s ease;
+      }
+      .nav-links.open{
+        transform:translateY(0);
+        opacity:1;
+        pointer-events:auto;
+      }
+      .nav-links a{width:100%}
+      .menu-btn{display:inline-flex;align-items:center;justify-content:center}
+    }
+
+    @media (max-width: 640px){
+      .nav-inner{height:72px}
+      .hero{padding-top:95px}
+      .headline{font-size:2.5rem}
+      .stat{min-width:100%}
+      .btn{width:100%}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#home">
+        <div class="brand-logo">P</div>
+        <div class="brand-text">
+          <span>NEHA</span>
+          <small>Web Developer Portfolio</small>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#about">About Me</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-btn" id="menuBtn" aria-label="Open Menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <h1 class="headline">Hi, I'm <span>NEHA</span> — a creative web developer.</h1>
+          <p>
+            I build modern, responsive, and user-friendly websites with strong UI/UX. My focus is on clean code, performance, and visually engaging digital experiences.
+          </p>
+
+          <div class="cta-row">
+            <a href="#projects" class="btn primary">View Projects</a>
+            <a href="#contact" class="btn secondary">Hire Me</a>
+          </div>
+
+          <div class="quick-stats">
+            <div class="stat">
+              <strong>10+</strong>
+              <span>Completed Projects</span>
+            </div>
+            <div class="stat">
+              <strong>3+</strong>
+              <span>Technologies Used</span>
+            </div>
+            <div class="stat">
+              <strong>100%</strong>
+              <span>Responsive Design</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="photo-wrap">
+            <img src="NEHA.jpeg" alt="Professional portrait" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-sub">
+          I am a passionate web developer who enjoys turning ideas into interactive and elegant websites. I love building projects that combine functionality, usability, and beautiful design.
+        </p>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Background</h3>
+            <p>
+              I started learning web development through HTML, CSS, and JavaScript, and gradually expanded into modern frontend practices, animations, and responsive layouts.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Education</h3>
+            <p>
+              Bachelor’s / Diploma / Self-learning in Web Development, with focus on frontend design, user experience, and interactive website building.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Experience</h3>
+            <p>
+              I have worked on personal and academic projects, landing pages, portfolio websites, and interactive UI components.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <p class="section-sub">
+          My core skills include building responsive websites, designing clean interfaces, and creating smooth user interactions.
+        </p>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Frontend</h3>
+            <div class="badge-list">
+              <span class="badge">HTML5</span>
+              <span class="badge">CSS3</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">Responsive Design</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>UI/UX</h3>
+            <div class="badge-list">
+              <span class="badge">Wireframing</span>
+              <span class="badge">Layouts</span>
+              <span class="badge">Animations</span>
+              <span class="badge">Accessibility</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Tools</h3>
+            <div class="badge-list">
+              <span class="badge">VS Code</span>
+              <span class="badge">GitHub</span>
+              <span class="badge">Figma</span>
+              <span class="badge">Canva</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-sub">
+          Here are some example projects that demonstrate design thinking, clean structure, and practical frontend development.
+        </p>
+
+        <div class="projects">
+          <div class="card project">
+            <div class="thumb">💻</div>
+            <h3>Responsive Landing Page</h3>
+            <p>A modern landing page with a fixed navbar, hero section, and smooth mobile menu.</p>
+          </div>
+          <div class="card project">
+            <div class="thumb">🎮</div>
+            <h3>Tic-Tac-Toe App</h3>
+            <p>Interactive game with score tracking, win detection, and polished animations.</p>
+          </div>
+          <div class="card project">
+            <div class="thumb">📱</div>
+            <h3>Portfolio Website</h3>
+            <p>Personal portfolio layout highlighting skills, work history, and contact details.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <h2 class="section-title">Accomplishments</h2>
+        <p class="section-sub">A few highlights from learning and building as a developer.</p>
+
+        <div class="card timeline">
+          <div class="timeline-item">
+            <h4>Built multiple responsive web pages</h4>
+            <small>Landing pages, portfolio pages, and mini projects</small>
+          </div>
+          <div class="timeline-item">
+            <h4>Improved UI/UX understanding</h4>
+            <small>Focus on layout balance, color harmony, and readability</small>
+          </div>
+          <div class="timeline-item">
+            <h4>Worked with interactive JavaScript</h4>
+            <small>Menus, dynamic content, and game logic</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-sub">
+          Use this section to share your email, phone number, LinkedIn, GitHub, or a contact form.
+        </p>
+
+        <div class="contact-grid">
+          <div class="card">
+            <h3>Get In Touch</h3>
+            <p style="margin:12px 0 18px">
+              Email: yourname@email.com<br>
+              Phone: +91-XXXXXXXXXX<br>
+              Location: Delhi, India
+            </p>
+            <div class="badge-list">
+              <span class="badge">LinkedIn</span>
+              <span class="badge">GitHub</span>
+              <span class="badge">Instagram</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Send a Message</h3>
+            <form>
+              <input type="text" placeholder="Your Name" />
+              <input type="email" placeholder="Your Email" />
+              <textarea placeholder="Your Message"></textarea>
+              <button class="btn primary" type="submit" style="border:none">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 Your Name | Personal Portfolio Website
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.getElementById('navLinks');
+    const menuBtn = document.getElementById('menuBtn');
+    const links = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
+
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 120;
+        if (window.scrollY >= top) current = section.getAttribute('id');
+      });
+      links.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    links.forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navbar.contains(e.target)) navLinks.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
